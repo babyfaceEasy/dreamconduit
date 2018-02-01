@@ -53,8 +53,8 @@ class ExamController extends Controller
         //<i class="fa fa-cog" aria-hidden="true"></i>
         //this is to add the action column
         $datatables->addColumn('action', function($exam){
-            $quest_route  = route('quest.index', ['exam_id'=>$exam->id]); 
-            //$quest_route  = route('quest.index', ['exam_id'=>$exam->id]); 
+            $quest_route  = route('quest.index', ['exam_id'=>$exam->id]);
+            //$quest_route  = route('quest.index', ['exam_id'=>$exam->id]);
             return '<a href="'.route('quest.index', ['exam_id' => $exam->id]).'" class="fa fa-cog btn btn-sm btn-info"> Manage Questions</a>
               <a href="'.route('candidates.index', ['exam_id' => $exam->id]). '" class="fa fa-cog btn btn-sm btn-warning"> Manage Candidates</a>
               <a href="'.route('admin.results', ['exam_id' => $exam->id]). '" class="fa fa-eye-slash btn btn-sm btn-success"> View Results</a>
@@ -78,20 +78,20 @@ class ExamController extends Controller
     public function exportAllResults($id)
     {
         $data = Pivot::where('exam_id', $id)->get();
-        
+
         //dd($data);
         $exam_name = $data->get(0)->exam->exam_name;
-        
+
         //dd($data->get(0)->exam->exam_name);
-        
-        
+
+
         if($exam_name != null){
-        
+
         	Excel::create($exam_name, function ($excel) use($data){
 	            $excel->sheet('results', function ($sheet) use($data){
 	                $data = $data->each(function($item, $key) {
-	                    //dd($key);	
-	                    
+	                    //dd($key);
+
 	                    $item->exam_id = $item->exam->exam_name;
 	                    $item->examuser_id = $item->candidate->name;
 	                    if ($item->av_taken_test == 0){
@@ -99,12 +99,12 @@ class ExamController extends Controller
 	                    }else{
 	                        $item->av_taken_test = 'Yes';
 	                    }
-	
+
 	                    if ($item->results == 0){
 	                        $item->results = '0';
 	                    }
 	                    $item->updated_at = $item->updated_at;
-	                   
+
 	                });
 	                $data = $data->toArray();
 	                foreach($data as $key => $dt){
@@ -123,14 +123,14 @@ class ExamController extends Controller
     				array('data3', 'data4')
 	                ));*/
 	            });
-	            
-	        })->export('xlsx');
-        	
+
+	        })->download('xls');
+
         }//end of if()
 
     }//end of exportAllResults()
 
-    
+
     /**
      * Display a listing of the resource.
      *
