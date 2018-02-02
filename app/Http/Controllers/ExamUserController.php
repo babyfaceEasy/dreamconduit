@@ -36,7 +36,7 @@ class ExamUserController extends Controller
     //this returns sample file for the batch upload format
     public function sampleExcelDownload(Request $request)
     {
-      return response()->download(public_path('templates/candidates-batch-upload.xls'));
+      return response()->download(public_path('templates/candidates-batch-upload.xlsx'));
     }
 
     public function store(Request $request)
