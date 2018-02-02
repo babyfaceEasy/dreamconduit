@@ -23,7 +23,7 @@
 
                 <?php //dump($exam_id); ?>
                 <div class="panel-body">
-                    <a href="{{route('exam.index')}}" class="btn btn-warning"><span class="fa fa-arrow-left" aria-hidden="true"></span> Back to Exams</a> 
+                    <a href="{{route('exam.index')}}" class="btn btn-warning"><span class="fa fa-arrow-left" aria-hidden="true"></span> Back to Exams</a>
                     <a href="#" id="add_cand_btn" class="btn btn-primary"><span class="fa fa-plus" aria-hidden="true"></span> Add Candidates</a>
                     <a href="#" data-toggle="modal" data-target="#myModal" class="btn btn-danger"><span class="fa fa-minus" aria-hidden="true"></span> Clear Candidates</a>
                     <div id="add_cand" style="display: none; padding-top: 10px;">
@@ -50,7 +50,7 @@
                             </span>
                         @endif
                       </div>
-                      
+
                       <button type="submit" class="btn btn-default">Add Candidate</button>
                     </form>
                     <hr>
@@ -67,7 +67,10 @@
                             </span>
                         @endif
                       </div>
-                      
+
+                      <!-- dis is to download a sample of the uploadable list -->
+                      <a href="{{ route('batch.upload.sample') }}">Click here to download sample file</a> <br>
+
                       <button type="submit" class="btn btn-default">Upload Candidates</button>
                     </form>
                     </div><!-- End of the id:add_cand -->
@@ -85,7 +88,7 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Email</th>                                          
+                                    <th>Email</th>
                                     <th>Key</th>
                                     <th></th>
                                 </tr>
@@ -211,7 +214,7 @@
             }
         });
     }//end of performResetCandidate()
-    
+
     function deleteCandidate(elt, id) {
         //alert(id);
         var url = elt.dataset.url;
@@ -219,7 +222,7 @@
         $(".modal-body  #val_id").text( url );
         $('#del_candidate_modal').modal('show');
     }
-    
+
     function performDeleteCandidate( url ) {
 
         var exam_id = '{{ Request::segment(3) }}';

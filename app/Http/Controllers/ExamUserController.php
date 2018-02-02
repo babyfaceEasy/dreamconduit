@@ -18,8 +18,8 @@ class ExamUserController extends Controller
     public function __construct()
     {
     	$this->middleware('auth', ['except' => [
-            'candidateLogin', 
-            'clientLoginPage', 
+            'candidateLogin',
+            'clientLoginPage',
             'clientInfoPage',
             'candidateLogin',
             'candidateLogout',
@@ -33,6 +33,12 @@ class ExamUserController extends Controller
     	return view('exam_user.create', ['exam_id' => $exam_id]);
     }
 
+    //this returns sample file for the batch upload format
+    public function sampleExcelDownload(Request $request)
+    {
+      return response()->download(public_path('templates/candidates-batch-upload.xls'));
+    }
+
     public function store(Request $request)
     {
     	//dd($request);
@@ -44,7 +50,7 @@ class ExamUserController extends Controller
         }else{
            $this->validate($request, [
                 'names_excel' => 'required|file'
-            ]); 
+            ]);
         }
 
         if($request->has('type') && $request->input('type') == 'group'){
@@ -222,7 +228,7 @@ class ExamUserController extends Controller
     	/*$candidates = ExamUser::where('exam_id', $exam_id)->get();
     	dd($candidates);*/
     	return view('exam_user.index');
-    } 
+    }
 
     protected function checker(Request $request)
     {
@@ -282,7 +288,7 @@ class ExamUserController extends Controller
     		}else
     		{
     			//go to the show me page
-    			//and set the 
+    			//and set the
     			$request->session()->put('client_name', $candidate->name);
     			$request->session()->put('client_email', $candidate->email);
 
@@ -306,7 +312,7 @@ class ExamUserController extends Controller
                 //shows list of all exams for the particular user
                 //return redirect()->route('candidates.exam.list');
                 return view('exam_user.info', ['exam' => $exam, 'candidate' =>$candidate]);
-    			
+
     		}
     	}
     }//end candidateLogin
@@ -319,7 +325,7 @@ class ExamUserController extends Controller
 
     public function candidateListOfExamsData(Request $request)
     {
-        
+
         //this returns all the exam names for the particular user
         //dd($request->session()->get('client_email'));
         DB::statement(DB::raw('set @rownum:=0'));
@@ -367,7 +373,7 @@ class ExamUserController extends Controller
         $datatables = CandidateTrait::candidatesExamResultsDT($exam_id);
 
         $exam = Exam::find($exam_id);
-        $percent = $exam->pass_percengtage; 
+        $percent = $exam->pass_percengtage;
 
         //$datatables = Datatables::of($candidates);
         $datatables->editColumn('exam_id', function ($data){

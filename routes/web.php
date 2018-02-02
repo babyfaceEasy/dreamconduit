@@ -43,6 +43,9 @@ Route::get('/candidates/test', 'ExamUserController@testExcel')->name('candidates
 Route::get('/candidates/specific/{exam_id}', 'ExamUserController@viewList')->name('candidates.specific');
 Route::get('/candidates/specific/data', 'ExamUserController@viewList')->name('candidates.specific.data');
 Route::post('/candidates/login', 'ExamUserController@candidateLogin')->name('client.login');
+
+//to downlaod templates
+Route::get('/candidates/file/sample', 'ExamUserController@sampleExcelDownload')->name('batch.upload.sample');
 /*
 Route::get('/client/login/pg', 'ExamUserController@clientLoginPage')->name('client.login.page');
 Route::get('/client/info/page', 'ExamUserController@clientInfoPage')->name('client.info.page');
