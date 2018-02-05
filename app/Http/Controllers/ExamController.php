@@ -75,6 +75,104 @@ class ExamController extends Controller
         return $datatables->make(true);
     }
 
+    //this return the page where u set the duration to exportAllResults
+    public function durationPage(Request $request, $id)
+    {
+      return view('exam.export_results')->with('exam_id', $id);
+    }
+
+    public function postExportResults(Request $request)
+    {
+      //dd($request->all());
+      $this->validate($request, [
+        'start_date' => '',
+        'end_date' => ''
+      ]);
+      
+      //DB::enableQueryLog();
+      
+      $data = Pivot::where('exam_id', $request->input('exam_id'));     
+      if ( $request->input('start_date') != '' && $request->input('end_date') != '' ){
+        $data = $data->whereBetween('created_at', [$request->input('end_date'), $request->input('start_date')])->get();
+        //echo 'kunle';
+      }else{
+      	$data = $data->get();
+      }
+      
+      //dump($data);
+      //dd(DB::getQueryLog());
+      //die();
+
+      
+      //dd($data);
+
+      /*if($request->input('start_date') != ''){
+        $data = $data->whereDate('created_at', $request->input('start_date'));
+      }*/
+
+      
+
+      //dd($data);
+      //dd($data->get());
+      //$data = $data->get();
+      //dd($data);
+
+
+      if ($data->count() == 0) {
+        return redirect()->route('duration.excel.results', ['exam_id', $request->input('exam_id')])
+          ->with('err_msg', 'Results were not found for the specified duration.');
+      }
+
+      //dd($data);
+      $exam_name = $data->get(0)->exam->exam_name;
+
+      //dd($data->get(0)->exam->exam_name);
+
+
+      if($exam_name != null){
+
+        Excel::create($exam_name, function ($excel) use($data){
+            $excel->sheet('results', function ($sheet) use($data){
+                $data = $data->each(function($item, $key) {
+                    //dd($key);
+
+                    $item->exam_id = $item->exam->exam_name;
+                    $item->examuser_id = $item->candidate->name;
+                    if ($item->av_taken_test == 0){
+                        $item->av_taken_test = 'No';
+                    }else{
+                        $item->av_taken_test = 'Yes';
+                    }
+
+                    if ($item->results == 0){
+                        $item->results = '0';
+                    }
+                    $item->updated_at = $item->updated_at;
+
+                });
+                $data = $data->toArray();
+                foreach($data as $key => $dt){
+                  unset($dt['exam']);
+                  unset($dt['candidate']);
+                  $data[$key] = $dt;
+                  //dd($dt);
+                  //unset($dt['exam']);
+                  //unset($dt['candidate']);
+                }
+                //die();
+                //dd($data);
+                $sheet->fromArray($data);
+                /*$sheet->fromArray(array(
+                  array('data1', 'data2'),
+          array('data3', 'data4')
+                ));*/
+            });
+
+        })->download('xls');
+
+      }//end of if()
+    }
+
     public function exportAllResults($id)
     {
         $data = Pivot::where('exam_id', $id)->get();

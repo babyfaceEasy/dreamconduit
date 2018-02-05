@@ -9,8 +9,9 @@
             <h3>Result Listing</h3>
         </div>
 
-        <a href="{{route('exam.index')}}" class="btn btn-warning" style="margin-bottom: 15px;"><span class="fa fa-arrow-left" aria-hidden="true"></span> Back to Exams</a> 
-        <a href="{{route('specific.excel.results', ['exam_id' => Request::segment(4)])}}" class="btn btn-default" style="margin-bottom: 15px;"><span class="fa fa-file-excel-o" aria-hidden="true"></span> Export all Results</a>
+        <a href="{{route('exam.index')}}" class="btn btn-warning" style="margin-bottom: 15px;"><span class="fa fa-arrow-left" aria-hidden="true"></span> Back to Exams</a>
+        <!-- <a href="{{route('specific.excel.results', ['exam_id' => Request::segment(4)])}}" class="btn btn-default" style="margin-bottom: 15px;"><span class="fa fa-file-excel-o" aria-hidden="true"></span> Export all Results</a>-->
+        <a href="{{route('duration.excel.results', ['exam_id' => Request::segment(4)])}}" class="btn btn-default" style="margin-bottom: 15px;"><span class="fa fa-file-excel-o" aria-hidden="true"></span> Export all Results</a>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -26,10 +27,10 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Percentage</th>                       
+                                <th>Percentage</th>
                                 <th>Taken Test ? </th>
-                                <th>Time Taken</th>                      
-                                <th></th>                       
+                                <th>Time Taken</th>
+                                <th></th>
                             </tr>
                         </thead>
                     </table>

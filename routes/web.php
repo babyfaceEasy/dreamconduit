@@ -20,6 +20,8 @@ Route::get('/', function () {
 
 
 Route::get('/exam/allResults/{exam_id}', 'ExamController@exportAllResults')->name('specific.excel.results');
+Route::get('/exam/duration/allResults/{exam_id}', 'ExamController@durationPage')->name('duration.excel.results');
+Route::post('/exam/duration/allResults', 'ExamController@postExportResults')->name('post.duration.results');
 Route::get('/specific/candidates/{id}', 'ExamController@specificCandidatesData')->name('admin.specific.cand');
 Route::post('/exam/clear_candidiates', 'ExamUserController@clearAllCandidates')->name('exam.clear.candidates');
 
