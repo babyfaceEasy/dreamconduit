@@ -90,7 +90,6 @@ trait CandidateTrait{
             $candidate = Candidate::where('email', '=', $row->emails)->first();
             //this is the email check area
             if ( $candidate === null ){
-
                 //email not found
                 $pwd = $generator->generate(8);
                 $candid_input['email'] = $row->emails;
@@ -100,14 +99,13 @@ trait CandidateTrait{
 
                 //this is to save into the db
                 $candidate = Candidate::create($candid_input);
+
+                //here just add the person to pivot table
+                $pivot_input = ['examuser_id' => $candidate->id, 'exam_id' => $exam_id, 'results' => 0, 'av_taken_test' => 0];
+                $ret = Pivot::create($pivot_input);
+                if($ret !== null)
+                    $ret_val = true;
             }
-
-            //here just add the person to pivot table
-            $pivot_input = ['examuser_id' => $candidate->id, 'exam_id' => $exam_id, 'results' => 0, 'av_taken_test' => 0];
-            $ret = Pivot::create($pivot_input);
-
-            if($ret !== null)
-                $ret_val = true;
         }
 
         return $ret_val;
@@ -183,7 +181,7 @@ trait CandidateTrait{
 
     /*
      * This is to returns a list for results
-     * 
+     *
      */
     public static function candidatesExamResultsDT($exam_id)
     {
@@ -218,7 +216,7 @@ trait CandidateTrait{
      * This checks if a user has taken a test
      * @param int $candidate_id
      * @param int $exam_id
-     * 
+     *
      * @return bool
      */
     public static function avTakenTest($candidate_id, $exam_id)
