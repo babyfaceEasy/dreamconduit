@@ -275,9 +275,9 @@
             processing: true,
             ajax: '{!! route('admin.specific.cand', ['id' => $exam_id])!!}',
             columns: [
-                {data: 'examuser_id', name: 'examuser_id'},
-                {data: 'email', name: 'email', searchable: false} ,
-                {data: 'key', name: 'key', searchable: false} ,
+                {data: 'name', name: 'name'},
+                {data: 'email', name: 'email'} ,
+                {data: 'unique_key', name: 'unique_key', searchable: false} ,
                 {data: 'action', name: 'action', searchable: false}
             ]
         });

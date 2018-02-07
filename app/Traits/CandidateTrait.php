@@ -157,10 +157,28 @@ trait CandidateTrait{
      */
     public static function specificCandidatesDT($exam_id)
     {
-        $candidates = Pivot::where('exam_id', $exam_id)->get();
+      //SELECT `examuser_id`, `exam_id`, `results`, `name`, `email`, `unique_key` FROM pivots INNER JOIN candidates ON examuser_id = id WHERE `exam_id` = '2'
+        //$candidates = Pivot::where('exam_id', $exam_id)->get();
+        //$candidates = Pivot::select(['examuser_id', 'exam_id', \DB::raw ])
+
+        /*$candidates = Pivot::select([
+          \DB::raw("'examuser_id', 'exam_id', 'results', 'name', 'email', 'unique_key' FROM pivots INNER JOIN candidates ON examuser_id = id WHERE `exam_id` = '2' ")
+          ])->get();
+
+          $candidates = DB::select('select examuser_id, exam_id, results, name, email, unique_key FROM pivots INNER JOIN candidates ON examuser_id = id WHERE exam_id = :exam_id',
+          [
+            'exam_id' => $exam_id
+          ]);*/
+
+          $candidates = DB::table('pivots')
+            ->join('candidates', 'pivots.examuser_id', '=', 'candidates.id')
+            ->select('pivots.*', 'candidates.name', 'candidates.email', 'candidates.unique_key')
+            ->where('exam_id', '=', $exam_id)
+            ->get();
 
         //dd($candidates->get(0)->candidate);
 
+        //$datatables = Datatables::of($candidates);
         $datatables = Datatables::of($candidates);
 
         return $datatables;

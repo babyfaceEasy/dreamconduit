@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Datatables;
 use App\Exam;
 use App\ExamUser;
+use App\Candidate;
 use Log;
 use DB;
 use Session;
@@ -88,29 +89,29 @@ class ExamController extends Controller
         'start_date' => '',
         'end_date' => ''
       ]);
-      
+
       //DB::enableQueryLog();
-      
-      $data = Pivot::where('exam_id', $request->input('exam_id'));     
+
+      $data = Pivot::where('exam_id', $request->input('exam_id'));
       if ( $request->input('start_date') != '' && $request->input('end_date') != '' ){
         $data = $data->whereBetween('created_at', [$request->input('end_date'), $request->input('start_date')])->get();
         //echo 'kunle';
       }else{
       	$data = $data->get();
       }
-      
+
       //dump($data);
       //dd(DB::getQueryLog());
       //die();
 
-      
+
       //dd($data);
 
       /*if($request->input('start_date') != ''){
         $data = $data->whereDate('created_at', $request->input('start_date'));
       }*/
 
-      
+
 
       //dd($data);
       //dd($data->get());
@@ -365,7 +366,7 @@ class ExamController extends Controller
     public function specificCandidatesData(Request $request, $id)
     {
         $datatables = CandidateTrait::specificCandidatesDT($id);
-        $datatables->editColumn('examuser_id', function ($candidate){
+        /*$datatables->editColumn('examuser_id', function ($candidate){
             return $candidate->candidate->name;
         });
         $datatables->addColumn('email', function ($candidate){
@@ -373,14 +374,19 @@ class ExamController extends Controller
         });
         $datatables->addColumn('key', function ($candidate){
             return $candidate->candidate->unique_key;
-        });
+        });*/
         $datatables->addColumn('action', function ($candidate){
             return '<a href="'.route('candidates.edit', ['id' => $candidate->examuser_id]). '" title="Edit Candidate" class="fa fa-pencil-square-o btn btn-sm btn-warning"> </a>
               <a title="Delete Candidate" title="Delete Candidate" data-url = "'.route('admin.delete.client', $candidate->examuser_id).'" onclick="deleteCandidate(this,'.$candidate->examuser_id.' )" class="icon fa fa-trash-o btn btn-sm btn-danger"></a>
-              <a title="Delete Candidate" title="Reset Candidate" data-url = "'.route('admin.reset.client', $candidate->examuser_id).'" onclick="resetCandidate(this,'.$candidate->examuser_id.' )" class="icon fa fa-refresh btn btn-sm btn-info"></a>
+              <a title="Reset Candidate" title="Reset Candidate" data-url = "'.route('admin.reset.client', $candidate->examuser_id).'" onclick="resetCandidate(this,'.$candidate->examuser_id.' )" class="icon fa fa-refresh btn btn-sm btn-info"></a>
 
             ';
         });
+        /*$datatables->filter(function ($query){
+          if (request()->has('email')) {
+            # code...
+          }
+        });*/
         return $datatables->make(true);
     }
 
