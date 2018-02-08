@@ -376,12 +376,12 @@ class ExamUserController extends Controller
         $percent = $exam->pass_percengtage;
 
         //$datatables = Datatables::of($candidates);
-        $datatables->editColumn('exam_id', function ($data){
+        /*$datatables->editColumn('exam_id', function ($data){
             return $data->candidate->name;
         });
         $datatables->addColumn('email', function ($data){
             return $data->candidate->email;
-        });
+        });*/
         $datatables->editColumn('results', function($data) use($percent){
             if ($data->results >= $percent) {
                 return '<span class="label label-success">'.$data->results.'</span>';
@@ -401,9 +401,10 @@ class ExamUserController extends Controller
             }
         });
         $datatables->editColumn('updated_at', function($data){
-            return $data->updated_at;
+            //return $data->updated_at;
+            return strftime("%m/%d/%Y %H:%M", strtotime($data->updated_at));
         });
-
+        //$datatables->addIndexColumn();
         return $datatables->make(true);
     }
 

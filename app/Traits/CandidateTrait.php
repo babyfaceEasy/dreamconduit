@@ -203,7 +203,7 @@ trait CandidateTrait{
      */
     public static function candidatesExamResultsDT($exam_id)
     {
-        DB::statement(DB::raw('set @rownum:=0'));
+        /*DB::statement(DB::raw('set @rownum:=0'));
         $candidates =  Pivot::select([
             DB::raw('@rownum := @rownum + 1 AS rownum'),
             'examuser_id',
@@ -213,6 +213,14 @@ trait CandidateTrait{
             'created_at',
             'updated_at',
         ])->where('exam_id', $exam_id);
+        */
+
+        DB::statement(DB::raw('set @rownum:=0'));
+        $candidates = DB::table('pivots')
+          ->join('candidates', 'pivots.examuser_id', '=', 'candidates.id')
+          ->select(DB::raw('@rownum := @rownum + 1 AS rownum'), 'pivots.*', 'candidates.name', 'candidates.email', 'candidates.updated_at')
+          ->where('exam_id', '=', $exam_id)
+          ->get();
         //dd($candidates);
 
         return Datatables::of($candidates);

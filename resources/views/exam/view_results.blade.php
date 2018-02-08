@@ -27,7 +27,7 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Percentage</th>
+                                <th>PCT(%)</th>
                                 <th>Taken Test ? </th>
                                 <th>Time Taken</th>
                                 <th></th>
@@ -60,11 +60,12 @@
         ],
         columns: [
             {data: 'rownum', name: 'rownum', orderable: false, searchable: false},
-            {data: 'exam_id', name: 'exam_id'},
-            {data: 'email', name: 'email', searchable: false},
-            {data: 'results', name: 'results'},
-            {data: 'av_taken_test', name: 'av_taken_test'},
-            {data: 'updated_at', name: 'updated_at'}
+            //{data: 'DT_Row_Index', orderable: false, searchable: false},
+            {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'results', name: 'results', orderable: false, searchable: false},
+            {data: 'av_taken_test', name: 'av_taken_test', orderable: false},
+            {data: 'updated_at', name: 'updated_at', searchable: false}
         ]
     });
 </script>
