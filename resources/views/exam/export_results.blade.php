@@ -18,8 +18,7 @@
                       <div id="add_cand" style="padding-top: 10px;">
                       <form id="" method="post" action="{{route('post.duration.results')}}" role="form">
                           {{csrf_field()}}
-                        <input type="hidden" name="type" value="single">
-                        <input type="hidden" name="exam_id" value="{{$exam_id}}">
+                        <input type="hidden" name="exam_id" value="{{ old('exam_id', $exam_id) }}">
 
                         <div class="form-group{{ $errors->has('start_date') ? ' has-error' : '' }}">
                           <label for="start_date">Start date</label>

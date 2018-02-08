@@ -87,14 +87,19 @@ class ExamController extends Controller
       //dd($request->all());
       $this->validate($request, [
         'start_date' => '',
-        'end_date' => ''
+        'end_date' => '',
+        'exam_id' => 'required'
       ]);
 
       //DB::enableQueryLog();
 
+      $start_date = date('Y-m-d H:i:s', strtotime($request->input('start_date'). ' 00:00:00'));
+      $end_date =  date('Y-m-d H:i:s',  strtotime($request->input('end_date'). ' 00:00:00'));
+
+
       $data = Pivot::where('exam_id', $request->input('exam_id'));
       if ( $request->input('start_date') != '' && $request->input('end_date') != '' ){
-        $data = $data->whereBetween('created_at', [$request->input('end_date'), $request->input('start_date')])->get();
+        $data = $data->whereBetween('created_at', [$start_date, $end_date])->get();
         //echo 'kunle';
       }else{
       	$data = $data->get();
